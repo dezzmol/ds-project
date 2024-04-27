@@ -18,7 +18,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Intern (
     id BIGSERIAL PRIMARY KEY,
-    user_id bigint REFERENCES Users(id) NOT NULL,
+    user_id bigint REFERENCES Users(id) UNIQUE NOT NULL,
     fullname VARCHAR(150) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     telegram_id VARCHAR(50) NOT NULL,
@@ -32,10 +32,10 @@ CREATE TABLE Intern (
     course INTEGER NOT NULL
 );
 
-CREATE TABLE IntershipMembers (
-    id BIGSERIAL PRIMARY KEY,
-    internship_id BIGINT REFERENCES Internship(id) NOT NULL,
-    member_id BIGINT REFERENCES Intern(id) NOT NULL,
+CREATE TABLE InternshipMembers (
+    internship_id BIGINT REFERENCES Internship(id),
+    member_id BIGINT REFERENCES Intern(id),
+    PRIMARY KEY (internship_id, member_id),
     status VARCHAR(50) NOT NULL
 );
 
@@ -52,16 +52,16 @@ CREATE TABLE Tasks (
     lesson_id BIGINT REFERENCES Lessons(id) NOT NULL
 );
 
-CREATE TABLE IntershipMembersTasks (
-    id BIGSERIAL PRIMARY KEY,
-    internship_id BIGINT REFERENCES Internship(id) NOT NULL,
-    member_id BIGINT REFERENCES Intern(id) NOT NULL,
-    task_id BIGINT REFERENCES Tasks(id) NOT NULL,
+CREATE TABLE InternshipMembersTasks (
+    internship_id BIGINT REFERENCES Internship(id) ,
+    member_id BIGINT REFERENCES Intern(id),
+    task_id BIGINT REFERENCES Tasks(id),
+    PRIMARY KEY(internship_id, member_id, task_id),
     status VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IntershipLessons (
-    id BIGSERIAL PRIMARY KEY,
+CREATE TABLE InternshipLessons (
     internship_id BIGINT REFERENCES Internship(id) NOT NULL,
-    lesson_id BIGINT REFERENCES Lessons(id) NOT NULL
+    lesson_id BIGINT REFERENCES Lessons(id) NOT NULL,
+    PRIMARY KEY (internship_id, lesson_id)
 );
