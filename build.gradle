@@ -11,6 +11,12 @@ java {
 	sourceCompatibility = 'VERSION_11'
 }
 
+ext {
+	mapstructVersion = "1.6.0.Beta1"
+	lombokVersion = "1.18.30"
+	lombokMapstructBindingVersion = "0.2.0"
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -26,10 +32,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	runtimeOnly "org.postgresql:postgresql"
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
