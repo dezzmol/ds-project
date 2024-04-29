@@ -1,14 +1,20 @@
 package com.digitalspirit.project.intern.entity;
 
 import com.digitalspirit.project.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
+@Builder
 @Table(name = "intern")
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Intern {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
