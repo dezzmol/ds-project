@@ -1,6 +1,7 @@
 package com.digitalspirit.project.internship.entity;
 
 import com.digitalspirit.project.lessons.entity.Lesson;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @Table(name = "internship")
 public class Internship {
     @Id
