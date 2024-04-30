@@ -66,11 +66,13 @@ public class InternshipService {
             throw new RuntimeException("User is already participating in this internship");
         }
 
-        if (internshipApplicationsRepository.findByUserId(user.getId()).isPresent()) {
+        Intern intern = internService.findByUserId(user.getId());
+
+        if (internshipApplicationsRepository.findByInternId(intern.getId()).isPresent()) {
             throw new RuntimeException("User already registered on this Internship");
         }
 
-        Intern intern = internService.findByUserId(user.getId());
+
 
         InternshipApplications application = InternshipApplications.builder()
                 .internship(internship)

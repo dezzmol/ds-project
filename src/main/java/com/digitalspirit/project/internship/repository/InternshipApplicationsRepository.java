@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface InternshipApplicationsRepository extends JpaRepository<InternshipApplications, Long> {
-    @Query("FROM InternshipApplications WHERE user_id = ?1")
-    Optional<InternshipApplications> findByUserId(Long userId);
+    @Query("FROM InternshipApplications WHERE intern_id = ?1")
+    Optional<InternshipApplications> findByInternId(Long internId);
 }

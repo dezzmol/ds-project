@@ -1,8 +1,10 @@
 package com.digitalspirit.project.internship.entity;
 
 import com.digitalspirit.project.intern.entity.Intern;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +14,8 @@ import java.io.Serializable;
 @Builder
 @Table(name = "InternshipApplications")
 @IdClass(InternshipApplicationId.class)
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class InternshipApplications implements Serializable {
     @Id
     @ManyToOne
