@@ -1,20 +1,31 @@
 package com.digitalspirit.project.internship.service;
 
+import com.digitalspirit.project.intern.entity.Intern;
+import com.digitalspirit.project.intern.service.InternService;
 import com.digitalspirit.project.internship.dto.InternshipCreatingDTO;
 import com.digitalspirit.project.internship.dto.InternshipDTO;
 import com.digitalspirit.project.internship.entity.Internship;
+import com.digitalspirit.project.internship.entity.InternshipApplications;
 import com.digitalspirit.project.internship.mapper.InternshipMapper;
+import com.digitalspirit.project.internship.repository.InternshipApplicationsRepository;
+import com.digitalspirit.project.internship.repository.InternshipMemberRepository;
 import com.digitalspirit.project.internship.repository.InternshipRepository;
+import com.digitalspirit.project.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
 public class InternshipService {
-    private final InternshipRepository repository;
+    private final InternshipRepository internshipRepository;
     private final InternshipMapper mapper;
+    private final InternshipApplicationsRepository internshipApplicationsRepository;
+    private final InternshipMemberRepository internshipMemberRepository;
+    private final InternService internService;
 
     public InternshipDTO createInternship(InternshipCreatingDTO creatingDTO) {
         if (creatingDTO.getStartDate().isAfter(creatingDTO.getEndDate())) {
@@ -37,6 +48,35 @@ public class InternshipService {
                 .lessons(new ArrayList<>())
                 .build();
 
-        return mapper.toInternshipDTO(repository.save(internship));
+        return mapper.toInternshipDTO(internshipRepository.save(internship));
+    }
+
+    public void registerOnInternship(Long internshipId) {
+        Internship internship = internshipRepository.findById(internshipId)
+                .orElseThrow(); //TODO: add exception
+
+        if (LocalDateTime.now().isAfter(internship.getClosingDateForRegistration())) {
+            throw new RuntimeException("Registration time has expired");
+        }
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        if (internshipMemberRepository.findByInternshipIdAndInternId(internshipId, user.getId()).isPresent()) {
+            throw new RuntimeException("User is already participating in this internship");
+        }
+
+        if (internshipApplicationsRepository.findByUserId(user.getId()).isPresent()) {
+            throw new RuntimeException("User already registered on this Internship");
+        }
+
+        Intern intern = internService.findByUserId(user.getId());
+
+        InternshipApplications application = InternshipApplications.builder()
+                .internship(internship)
+                .intern(intern)
+                .build();
+
+        internshipApplicationsRepository.save(application);
     }
 }

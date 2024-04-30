@@ -1,8 +1,10 @@
 package com.digitalspirit.project.internship.entity;
 
 import com.digitalspirit.project.lessons.entity.Lesson;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "internship")
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Internship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

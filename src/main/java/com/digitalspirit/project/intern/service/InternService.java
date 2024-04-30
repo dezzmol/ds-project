@@ -46,4 +46,7 @@ public class InternService {
         intern.setCourse(registerDTO.getCourse());
     }
 
+    public Intern findByUserId(Long userId) {
+        return repository.findInternByUserId(userId).orElseThrow(); //TODO: add exception
+    }
 }
