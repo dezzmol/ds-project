@@ -1,5 +1,6 @@
 package com.digitalspirit.project.internship.service;
 
+import com.digitalspirit.project.exceptions.BadRequestException;
 import com.digitalspirit.project.intern.entity.Intern;
 import com.digitalspirit.project.intern.service.InternService;
 import com.digitalspirit.project.internship.dto.InternshipCreatingDTO;
@@ -12,6 +13,7 @@ import com.digitalspirit.project.internship.repository.InternshipMemberRepositor
 import com.digitalspirit.project.internship.repository.InternshipRepository;
 import com.digitalspirit.project.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +31,13 @@ public class InternshipService {
 
     public InternshipDTO createInternship(InternshipCreatingDTO creatingDTO) {
         if (creatingDTO.getStartDate().isAfter(creatingDTO.getEndDate())) {
-            throw new RuntimeException("Start date should be after end date"); //TODO: add exception
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "Start date should be after end date");
         }
         if (creatingDTO.getClosingDateForRegistration().isBefore(creatingDTO.getStartDate())) {
-            throw new RuntimeException("Closing date for registration should be after start date"); //TODO: add exception
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "Closing date for registration should be after start date");
         }
         if (creatingDTO.getClosingDateForRegistration().isAfter(creatingDTO.getEndDate())) {
-            throw new RuntimeException("Closing date for registration should be before end date"); //TODO: add exception
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "Closing date for registration should be before end date");
         }
 
         Internship internship = Internship.builder()
@@ -53,26 +55,24 @@ public class InternshipService {
 
     public void registerOnInternship(Long internshipId) {
         Internship internship = internshipRepository.findById(internshipId)
-                .orElseThrow(); //TODO: add exception
+                .orElseThrow(() -> new BadRequestException(HttpStatus.NOT_FOUND, "Internship not found"));
 
         if (LocalDateTime.now().isAfter(internship.getClosingDateForRegistration())) {
-            throw new RuntimeException("Registration time has expired");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "Registration time has expired");
         }
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
 
         if (internshipMemberRepository.findByInternshipIdAndInternId(internshipId, user.getId()).isPresent()) {
-            throw new RuntimeException("User is already participating in this internship");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "User is already participating in this internship");
         }
 
         Intern intern = internService.findByUserId(user.getId());
 
         if (internshipApplicationsRepository.findByInternId(intern.getId()).isPresent()) {
-            throw new RuntimeException("User already registered on this Internship");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "User already registered on this Internship");
         }
-
-
 
         InternshipApplications application = InternshipApplications.builder()
                 .internship(internship)

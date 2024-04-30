@@ -1,12 +1,13 @@
 package com.digitalspirit.project.auth.service;
 
+import com.digitalspirit.project.exceptions.BadRequestException;
 import com.digitalspirit.project.user.Role;
 import com.digitalspirit.project.user.User;
 import com.digitalspirit.project.user.dto.SignUpDTO;
 import com.digitalspirit.project.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +18,7 @@ public class AuthService {
 
     public void signUp(SignUpDTO signUpDTO) {
         if (userService.existsByUsername(signUpDTO.getUsername())) {
-            throw new RuntimeException("user already exist");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST, "User with this username already registered");
         }
 
         User user = User.builder()
