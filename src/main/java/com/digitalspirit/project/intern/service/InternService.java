@@ -1,11 +1,15 @@
 package com.digitalspirit.project.intern.service;
 
+import com.digitalspirit.project.exceptions.BadRequestException;
+import com.digitalspirit.project.intern.dto.InternDTO;
 import com.digitalspirit.project.intern.dto.InternRegisterDTO;
 import com.digitalspirit.project.intern.entity.Intern;
+import com.digitalspirit.project.intern.mapper.InternMapper;
 import com.digitalspirit.project.intern.repository.InternRepository;
 import com.digitalspirit.project.user.User;
 import com.digitalspirit.project.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +17,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InternService {
     private final InternRepository repository;
+    private final InternMapper mapper;
+
     public void save(InternRegisterDTO registerDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -47,6 +53,14 @@ public class InternService {
     }
 
     public Intern findByUserId(Long userId) {
-        return repository.findInternByUserId(userId).orElseThrow(); //TODO: add exception
+        return repository.findInternByUserId(userId).orElseThrow(() -> new BadRequestException(HttpStatus.NOT_FOUND, "Intern not found"));
+    }
+
+    public Intern findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new BadRequestException(HttpStatus.NOT_FOUND, "Intern not found"));
+    }
+
+    public InternDTO toInternDTO(Intern intern) {
+        return mapper.toInternDTO(intern);
     }
 }
