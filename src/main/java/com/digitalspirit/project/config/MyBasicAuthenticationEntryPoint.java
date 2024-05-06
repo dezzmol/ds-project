@@ -1,4 +1,4 @@
-package com.digitalspirit.project.auth.config;
+package com.digitalspirit.project.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
