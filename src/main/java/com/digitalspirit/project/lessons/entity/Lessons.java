@@ -1,15 +1,22 @@
 package com.digitalspirit.project.lessons.entity;
 
 import com.digitalspirit.project.internship.entity.Internship;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
 @Table(name = "lessons")
-public class Lesson {
+@RequiredArgsConstructor
+@AllArgsConstructor
+public class Lessons implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
