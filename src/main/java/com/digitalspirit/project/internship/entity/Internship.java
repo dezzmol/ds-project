@@ -1,6 +1,6 @@
 package com.digitalspirit.project.internship.entity;
 
-import com.digitalspirit.project.lessons.entity.Lesson;
+import com.digitalspirit.project.lessons.entity.Lessons;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,5 +45,5 @@ public class Internship {
             joinColumns = @JoinColumn(name = "internship_id"),
             inverseJoinColumns = @JoinColumn(name = "lesson_id")
     )
-    private List<Lesson> lessons;
+    private List<Lessons> lessons;
 }

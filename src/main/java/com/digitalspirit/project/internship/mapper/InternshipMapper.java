@@ -15,5 +15,5 @@ public interface InternshipMapper {
 
     InternshipApplicationsDTO toInternshipApplicationsDTO(InternshipDTO internshipDTO, List<InternDTO> applications);
 
-    InternshipMembersDTO toInternshipMembersDTO(Internship internship, List<InternDTO> members);
+    InternshipMembersDTO toInternshipMembersDTO(InternshipDTO internshipDTO, List<InternDTO> members);
 }

@@ -161,6 +161,6 @@ public class InternshipService {
                 })
                 .collect(Collectors.toList());
 
-        return mapper.toInternshipMembersDTO(internship, interns);
+        return mapper.toInternshipMembersDTO(mapper.toInternshipDTO(internship), interns);
     }
 }
