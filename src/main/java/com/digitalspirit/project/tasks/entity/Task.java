@@ -1,13 +1,21 @@
-package com.digitalspirit.project.lessons.entity;
+package com.digitalspirit.project.tasks.entity;
 
+import com.digitalspirit.project.lessons.entity.Lessons;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
+@Builder
 @Table(name = "Tasks")
-public class Task {
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,5 +28,5 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "lesson_id", nullable = false, foreignKey = @ForeignKey(name = "lesson_id"))
-    private Lesson lesson;
+    private Lessons lessons;
 }

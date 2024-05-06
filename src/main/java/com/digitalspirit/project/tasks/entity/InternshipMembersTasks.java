@@ -1,7 +1,7 @@
-package com.digitalspirit.project.internship.entity;
+package com.digitalspirit.project.tasks.entity;
 
 import com.digitalspirit.project.intern.entity.Intern;
-import com.digitalspirit.project.lessons.entity.Task;
+import com.digitalspirit.project.internship.entity.Internship;
 import lombok.Data;
 
 import javax.persistence.*;
