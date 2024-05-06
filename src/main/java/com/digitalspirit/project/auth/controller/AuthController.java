@@ -17,19 +17,9 @@ public class AuthController {
     private final AuthService authService;
 
     @ApiOperation(value = "Регистрация пользователей")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "token", required = true, dataType = "string", paramType = "header"),
-    })
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDTO signUpDTO) {
         authService.signUp(signUpDTO);
         return ResponseEntity.ok("User registered successfully");
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> test(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        return ResponseEntity.ok().body(userDetails);
     }
 }
