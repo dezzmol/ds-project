@@ -25,6 +25,12 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url "https://jitpack.io"
+		content {
+			includeGroup "com.github.gitlab4j"
+		}
+	}
 }
 
 dependencies {
@@ -37,6 +43,7 @@ dependencies {
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	runtimeOnly "org.postgresql:postgresql"
+	implementation group: 'org.gitlab4j', name: 'gitlab4j-api', version: '5.5.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
