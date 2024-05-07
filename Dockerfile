@@ -1,10 +1,6 @@
-FROM gradle:7.0-jdk-alpine
-RUN mkdir /home/gradle/buildWorkspace
-COPY . /home/gradle/buildWorkspace
+FROM gradle:6.9.4-jdk11
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 
-WORKDIR /home/gradle/buildWorkspace
-RUN ls /home/gradle/buildWorkspace
-RUN gradle build --no-daemon
-RUN ls /home/gradle/buildWorkspace/app/build/distributions/
-RUN tar -xvf /home/gradle/buildWorkspace/app/build/distributions/app.tar
+COPY build/libs/project-0.0.1-SNAPSHOT.jar /app.jar
+
 EXPOSE 8080

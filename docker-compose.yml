@@ -3,6 +3,7 @@ services:
     db:
         container_name: 'postgresdb'
         image: postgres
+        restart: always
         environment:
             POSTGRES_DB: ${DB_NAME}
             POSTGRES_USER: ${DB_USERNAME}
@@ -16,11 +17,11 @@ services:
 
     gitlab:
         image: gitlab/gitlab-ce:latest
-        container_name: gitlab
+        container_name: project-gitlab
         restart: always
         environment:
             GITLAB_OMNIBUS_CONFIG: |
-                external_url 'http://192.168.0.16:8088'
+                external_url 'http://192.168.1.163:8088'
         ports:
             - '8088:8088'
         volumes:
