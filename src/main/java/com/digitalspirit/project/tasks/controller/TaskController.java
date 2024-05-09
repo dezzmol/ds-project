@@ -19,6 +19,6 @@ public class TaskController {
 
     @GetMapping("/lessons/{lessonId}")
     public ResponseEntity<List<TaskDTO>> getTasks(@PathVariable Long lessonId) {
-        return ResponseEntity.ok(taskService.getTasks(lessonId));
+        return ResponseEntity.ok(taskService.getTasksDTO(lessonId));
     }
 }
