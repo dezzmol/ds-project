@@ -1,6 +1,7 @@
 package com.digitalspirit.project.lessons.service;
 
 import com.digitalspirit.project.exceptions.BadRequestException;
+import com.digitalspirit.project.intern.entity.Intern;
 import com.digitalspirit.project.internship.entity.Internship;
 import com.digitalspirit.project.internship.service.InternshipService;
 import com.digitalspirit.project.lessons.dto.CreateLessonDTO;
@@ -10,10 +11,12 @@ import com.digitalspirit.project.lessons.entity.Lessons;
 import com.digitalspirit.project.lessons.mapper.LessonsMapper;
 import com.digitalspirit.project.lessons.repository.InternshipLessonsRepository;
 import com.digitalspirit.project.lessons.repository.LessonsRepository;
-import com.digitalspirit.project.tasks.entity.Task;
+import com.digitalspirit.project.tasks.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class LessonsService {
     private final InternshipLessonsRepository internshipLessonsRepository;
     private final InternshipService internshipService;
     private final LessonsMapper mapper;
+    private final TaskService taskService;
 
     public LessonsDTO createLesson(CreateLessonDTO lessonDTO) {
         Lessons lessons = Lessons.builder()
@@ -61,6 +65,13 @@ public class LessonsService {
                 .orElseThrow(() -> new BadRequestException(HttpStatus.NOT_FOUND, "Lesson not found"));
 
         internshipLesson.setIsOpen(true);
+
+        List<Intern> internList = internshipService.getInternsList(internshipId);
+        taskService.openTasks(internship, lessonId, internList);
         internshipLessonsRepository.save(internshipLesson);
+    }
+
+    private void createForkForTasks(Internship internship) {
+        //TODO: создать функцию форка репозиториев
     }
 }
