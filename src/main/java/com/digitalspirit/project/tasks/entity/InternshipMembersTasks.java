@@ -2,14 +2,21 @@ package com.digitalspirit.project.tasks.entity;
 
 import com.digitalspirit.project.intern.entity.Intern;
 import com.digitalspirit.project.internship.entity.Internship;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
 @Entity
+@Builder
 @Table(name = "InternshipMembersTasks")
+@IdClass(InternshipMembersTasksId.class)
+@AllArgsConstructor
+@NoArgsConstructor
 public class InternshipMembersTasks implements Serializable {
     @Id
     @ManyToOne
