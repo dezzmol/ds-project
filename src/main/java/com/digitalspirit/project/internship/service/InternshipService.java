@@ -163,4 +163,15 @@ public class InternshipService {
 
         return mapper.toInternshipMembersDTO(mapper.toInternshipDTO(internship), interns);
     }
+
+    public List<Intern> getInternsList(Long internshipId) {
+        Internship internship = findInternshipById(internshipId);
+
+        List<InternshipMember> members = internshipMemberRepository.findByInternshipId(internshipId)
+                .orElseThrow(() -> new BadRequestException(HttpStatus.NOT_FOUND, "Internship members not found"));
+
+        return members.stream()
+                .map(InternshipMember::getIntern)
+                .collect(Collectors.toList());
+    }
 }
