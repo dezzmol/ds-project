@@ -23,7 +23,6 @@ public class LessonsAdminController {
 
     @PostMapping("/{lessonId}/internship/{internshipId}")
     public ResponseEntity<String> addLessonToInternship(@PathVariable Long lessonId, @PathVariable Long internshipId) {
-        System.out.println(lessonId + " " + internshipId);
         lessonsService.addLessonToInternship(lessonId, internshipId);
         return ResponseEntity.ok("lesson added to internship");
     }
