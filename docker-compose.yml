@@ -1,6 +1,6 @@
 version: '3.6'
 services:
-    db:
+    postgresql:
         container_name: 'postgresdb'
         image: postgres
         restart: always
@@ -22,6 +22,12 @@ services:
         environment:
             GITLAB_OMNIBUS_CONFIG: |
                 external_url 'http://192.168.1.163:8088'
+                'DB_HOST=${DB_URL}'
+                'DB_PORT=${DB_PORT}'
+                'DB_USER=gitlab'
+                'DB_PASS=${DB_PASSWORD}'
+                'DB_NAME=gitlabhq_production'
+
         ports:
             - '8088:8088'
         volumes:
@@ -29,16 +35,19 @@ services:
             - './data/gitlab/logs:/var/log/gitlab'
             - './data/gitlab/data:/var/opt/gitlab'
         shm_size: '256m'
+        depends_on:
+            - postgresql
         networks:
             - main_network
 
     backend:
         container_name: 'java-spring-boot-backend'
+        restart: always
         build:
             context: .
             dockerfile: Dockerfile
         depends_on:
-            - db
+            - postgresql
         ports:
             - '8080:8080'
         networks:
